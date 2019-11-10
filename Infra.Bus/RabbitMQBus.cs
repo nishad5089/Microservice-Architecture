@@ -96,7 +96,6 @@ namespace Infra.Bus
 
         private async Task ProcessEvent (string eventName, string message) {
             if (_handlers.ContainsKey (eventName)) {
-                
                     var subscriptions = _handlers[eventName];
                     foreach (var subscription in subscriptions) {
                         var handler = Activator.CreateInstance(subscription);
