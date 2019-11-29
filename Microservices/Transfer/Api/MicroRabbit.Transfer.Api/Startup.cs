@@ -18,6 +18,9 @@ using Infra.IoC;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using MicroRabbit.Transfer.Data.Context;
+using MicroRabbit.Transfer.Domain.Events;
+using MicroRabbit.Transfer.Domain.EventHandlers;
+using MicroBank.Domain.Core.Bus;
 
 namespace MicroRabbit.Transfer.Api {
     public class Startup {
@@ -108,6 +111,14 @@ namespace MicroRabbit.Transfer.Api {
             app.UseEndpoints (endpoints => {
                 endpoints.MapControllers ();
             });
+
+              ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<TransferCreatedEvent, TransferEventHandler>();
         }
     }
 }
